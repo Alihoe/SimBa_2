@@ -212,14 +212,29 @@ Using all features as union
 |Features|k=50|k=100|k=200|k=500|k=1000|k=5000|k=10,000|k=20,000|k=21328|
 |--------|----|-----|-----|-----|------|------|--------|--------|-------|
 |distiluse-base-multilingual-cased-v1|0.1128|0.1553|0.2089|0.3142|0.4214|0.7505|0.9353|0.9963|1|
-|sentence-transformers/sentence-t5-base|
-|synonym_similarity|    
-|ne_similarity|
-|similar_words_ratio|
-|similar_words_ratio_length|
-|jaccard_similarity|
-|levenshtein|
-|sequence_matching|
+|sentence-transformers/sentence-t5-base|0.1128|0.1497|0.2015|0.2773|0.3475|0.6506|0.7985|0.9908|1|
+|synonym_similarity|0.0222|0.0314|0.0407|0.0665|0.1368|0.3346|0.5564|0.9556|1|
+|ne_similarity|0.0425|0.0462|0.0647|0.0906|0.1516|0.5804|0.7172|0.9908|1|
+|similar_words_ratio|0.0536|0.0776|0.1035|0.1479|0.1885|0.5213|0.6987|0.9445|1|
+|similar_words_ratio_length|0.0536|0.0776|0.1035|0.1479|0.1885|0.5213|0.6987|0.9445|1|
+|jaccard_similarity|0.0351|0.0481|0.0628|0.1109|0.1368|0.3549|0.4972|0.8983|1|
+|levenshtein|0.0092|0.0129|0.0222|0.0499|0.0628|0.1996|0.4954|0.9261|1|
+|sequence_matching|0.0166|0.0203|0.0388|0.0795|0.1072|0.3309|0.5323|0.9224|1|
+
+Using all features as union
+
+|k     |Recall|
+|------|------|
+|k = 50|0.2126|
+|k = 100|0.2699|
+|k = 200|0.3715|
+|k = 500|0.4972|
+|k = 1000|0.6488|
+|k = 5000|**0.9353**|
+|k = 10,000|**1**|
+|k = 20,000|1|
+
+--> 5000 is sufficient
 
 - Val Data using only 'study_title', 'variable_label', 'question_text', 'question_text_en', 'sub_question', 'item_categories'
 
@@ -278,6 +293,27 @@ Unsupervised arithmetic averaging of all features
 
 - Val Data using all fields
 
+|Features|MAP@10|
+|--------|------|
+|all     |0.0133|
+|sentence-transformers/sentence-t5-base|**0.0307**|
+|distiluse-base-multilingual-cased-v1|0.0199|
+|synonym_similarity|0.0037|
+|ne_similarity|0.0038|
+|similar_words_ratio|0.0206|
+|similar_words_ratio_length|0.0206|
+|jaccard_similarity|0.0152|
+|levenshtein|0.0014|
+|sequence_matching| 0.0021|
+|sentence-transformers/sentence-t5-base + synonym_similarity|0.0106|
+|sentence-transformers/sentence-t5-base + similar_words_ratio|0.0181|
+|sentence-transformers/sentence-t5-base + similar_words_ratio_length|0.0216|
+|sentence-transformers/sentence-t5-base + levenshtein|0.0145|
+|sentence-transformers/sentence-t5-base + distiluse-base-multilingual-cased-v1|0.0242|
+|sentence-transformers/sentence-t5-base + distiluse-base-multilingual-cased-v1 + similar_words_ratio_length|0.0232|
+
+--> use strongest sentence transformer for re-ranking
+
 - Val Data using only 'study_title', 'variable_label', 'question_text', 'question_text_en', 'sub_question', 'item_categories'
 
 
@@ -306,48 +342,6 @@ Unsupervised arithmetic averaging of all features
 
 
 
-
-## Differences between fields
-
-Means of different features
-
-- sv_ident_val
-
-|Feature|Mean|
-|-------|----|
-|distiluse-base-multilingual-cased-v1|8.450|
-|synonym_similarity|3.299|
-|ne_similarity|0.142|
-|similar_words_ratio|1.315|
-|similar_words_ratio_length|0.657|
-|jaccard_similarity|3.018|
-|levenshtein|20.753|
-|sequence_matching|1.929|
-
-- sv_ident_val_fields_1:\
-'study_title', 'variable_label', 'question_text', 'question_text_en', 'sub_question', 'item_categories'
-  
-|Feature|Mean|
-|-------|----|
-|distiluse-base-multilingual-cased-v1|6.491|
-|synonym_similarity|3.468|
-|ne_similarity|0.213|
-|similar_words_ratio|1.131|
-|similar_words_ratio_length|0.566|
-|jaccard_similarity|3.111|
-|levenshtein|26.022|
-|sequence_matching|7.323|
-
-- sv_ident_val_question_text:\
-
-|distiluse-base-multilingual-cased-v1|3.033|
-|synonym_similarity|3.243|
-|ne_similarity|0.224|
-|similar_words_ratio|0.894|
-|similar_words_ratio_length|0.447|
-|jaccard_similarity|2.744|
-|levenshtein|23.973|
-|sequence_matching|11.823|
 
 
 

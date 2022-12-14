@@ -37,8 +37,6 @@ def create_feature_target_correlation_file(data_pred, data_gold, target_file_pat
     pred_query_ids = list(set(pred_df['query'].tolist()))
     pred_target_ids = pred_df['target'].tolist()
 
-    candidate_targets = {k: targets[k] for k in pred_target_ids if k in targets}
-
     candidate_queries_and_targets = {}
 
     for query_id in pred_query_ids:
@@ -56,6 +54,7 @@ def create_feature_target_correlation_file(data_pred, data_gold, target_file_pat
         target_text = targets[target_id]
         candidate_queries_and_targets[query_id][target_id] = target_text
         candidates[query_id].append(target_id)
+
 
     candidate_targets = get_candidate_targets(candidates, targets)
     candidate_target_ids = list(candidate_targets.keys())
@@ -207,6 +206,12 @@ def create_feature_target_correlation_file(data_pred, data_gold, target_file_pat
                             ratio = (100 / (len_union / 2)) * len_intersection
                         elif lex_feature == "similar_words_ratio_length":
                             ratio = (100 / len_union) * len_intersection
+                        if ratio == 0:
+                            print('Similar words ratio 0')
+                            print(queries[query_id])
+                            print(query_entities)
+                            print(targets[target_id])
+                            print(target_entities)
                         sim_scores[idx] = ratio
                 all_sim_scores[query_id].append(sim_scores)
     """
@@ -236,7 +241,6 @@ def create_feature_target_correlation_file(data_pred, data_gold, target_file_pat
                 all_sim_scores[query_id].append(sim_scores)
 
 
-
     columns = ['query_id', 'target_id', 'query', 'target', 'correct_pair']
     columns2 = ['correct_pair']
 
@@ -262,7 +266,7 @@ def create_feature_target_correlation_file(data_pred, data_gold, target_file_pat
                     query_text = queries[old_query_id]
                     this_row_scores = ['NOT PREDICTED_'+str(old_query_id), c_target, query_text, c_target_text, True]
                     for feature in all_features:
-                        this_row_scores.append(get_sim_score(feature, query_text, c_target_text, similarity_measure))
+                        this_row_scores.append(round(get_sim_score(feature, query_text, c_target_text, similarity_measure), 3))
                     this_row_df = pd.DataFrame([this_row_scores], columns=columns)
                     text_data_analysis_df = pd.concat([text_data_analysis_df, this_row_df])
             correct_predicted = False
@@ -298,13 +302,30 @@ def create_feature_target_correlation_file(data_pred, data_gold, target_file_pat
         text_data_analysis_df = pd.concat([text_data_analysis_df, this_row_df])
         target_idx = target_idx + 1
 
+
+    if not correct_predicted:
+        if type(correct_target) != list:
+            correct_target = [correct_target]
+        for c_target in correct_target:
+            c_target_text = targets[c_target]
+            query_text = queries[old_query_id]
+            this_row_scores = ['NOT PREDICTED_' + str(old_query_id), c_target, query_text, c_target_text, True]
+            for feature in all_features:
+                this_row_scores.append(
+                    round(get_sim_score(feature, query_text, c_target_text, similarity_measure), 3))
+            this_row_df = pd.DataFrame([this_row_scores], columns=columns)
+            text_data_analysis_df = pd.concat([text_data_analysis_df, this_row_df])
+
     analyse_feature_correlation(columns2, np.array(corr_analysis), 'spearmanr', data_pred)
 
     text_data_analysis_df.to_csv(text_data_analysis_path, index=False, header=True, sep='\t')
 
 
-path = DATA_PATH + 'sv_ident_val' + "/preprocessed/" + "study_title_variable_label_question_text_question_text_en_sub_question_item_categories_targets.tsv"
-create_feature_target_correlation_file('sv_ident_val_fields_1', 'sv_ident_val', path)
+# path = DATA_PATH + 'sv_ident_val' + "/preprocessed/" + "study_title_variable_label_question_text_question_text_en_sub_question_item_categories_targets.tsv"
+# create_feature_target_correlation_file('sv_ident_val_fields_1', 'sv_ident_val', path)
+
+path = DATA_PATH + 'sv_ident_trial_en' + "/corpus"
+create_feature_target_correlation_file('sv_ident_trial_en', 'sv_ident_trial_en', path)
 
 
 

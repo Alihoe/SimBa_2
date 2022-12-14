@@ -1,0 +1,131 @@
+['correct_pair', 'distiluse-base-multilingual-cased-v1', 'sentence-transformers/sentence-t5-base', 'synonym_similarity', 'ne_similarity', 'similar_words_ratio', 'similar_words_ratio_length', 'jaccard_similarity', 'levenshtein', 'sequence_matching']
+[[ 1.          0.04686173  0.03173393  0.02108062  0.06391157  0.04298017
+   0.04298017  0.04951964  0.03999254  0.01717857]
+ [ 0.04686173  1.          0.36592887  0.23276432  0.15621708  0.32276365
+   0.32276365  0.17069071  0.10830195  0.09231562]
+ [ 0.03173393  0.36592887  1.          0.41781838 -0.00187175  0.4534468
+   0.4534468   0.32668523  0.31872853  0.21326466]
+ [ 0.02108062  0.23276432  0.41781838  1.          0.03178651  0.51014077
+   0.51014077  0.54517037  0.30090799  0.12234286]
+ [ 0.06391157  0.15621708 -0.00187175  0.03178651  1.          0.26500379
+   0.26500379  0.22677245  0.00982729  0.02874078]
+ [ 0.04298017  0.32276365  0.4534468   0.51014077  0.26500379  1.
+   1.          0.69342885  0.27732642  0.2553662 ]
+ [ 0.04298017  0.32276365  0.4534468   0.51014077  0.26500379  1.
+   1.          0.69342885  0.27732642  0.2553662 ]
+ [ 0.04951964  0.17069071  0.32668523  0.54517037  0.22677245  0.69342885
+   0.69342885  1.          0.3632317   0.16214684]
+ [ 0.03999254  0.10830195  0.31872853  0.30090799  0.00982729  0.27732642
+   0.27732642  0.3632317   1.          0.36898084]
+ [ 0.01717857  0.09231562  0.21326466  0.12234286  0.02874078  0.2553662
+   0.2553662   0.16214684  0.36898084  1.        ]]
+-------------------------------------------
+The correlation for feature correct_pair
+with feature ne_similarity is 0.064
+with feature jaccard_similarity is 0.05
+with feature distiluse-base-multilingual-cased-v1 is 0.047
+with feature similar_words_ratio is 0.043
+with feature similar_words_ratio_length is 0.043
+with feature levenshtein is 0.04
+with feature sentence-transformers/sentence-t5-base is 0.032
+with feature synonym_similarity is 0.021
+with feature sequence_matching is 0.017
+-------------------------------------------
+The correlation for feature distiluse-base-multilingual-cased-v1
+with feature sentence-transformers/sentence-t5-base is 0.366
+with feature similar_words_ratio is 0.323
+with feature similar_words_ratio_length is 0.323
+with feature synonym_similarity is 0.233
+with feature jaccard_similarity is 0.171
+with feature ne_similarity is 0.156
+with feature levenshtein is 0.108
+with feature sequence_matching is 0.092
+with feature correct_pair is 0.047
+-------------------------------------------
+The correlation for feature sentence-transformers/sentence-t5-base
+with feature similar_words_ratio is 0.453
+with feature similar_words_ratio_length is 0.453
+with feature synonym_similarity is 0.418
+with feature distiluse-base-multilingual-cased-v1 is 0.366
+with feature jaccard_similarity is 0.327
+with feature levenshtein is 0.319
+with feature sequence_matching is 0.213
+with feature correct_pair is 0.032
+with feature ne_similarity is -0.002
+-------------------------------------------
+The correlation for feature synonym_similarity
+with feature jaccard_similarity is 0.545
+with feature similar_words_ratio is 0.51
+with feature similar_words_ratio_length is 0.51
+with feature sentence-transformers/sentence-t5-base is 0.418
+with feature levenshtein is 0.301
+with feature distiluse-base-multilingual-cased-v1 is 0.233
+with feature sequence_matching is 0.122
+with feature ne_similarity is 0.032
+with feature correct_pair is 0.021
+-------------------------------------------
+The correlation for feature ne_similarity
+with feature similar_words_ratio is 0.265
+with feature similar_words_ratio_length is 0.265
+with feature jaccard_similarity is 0.227
+with feature distiluse-base-multilingual-cased-v1 is 0.156
+with feature correct_pair is 0.064
+with feature synonym_similarity is 0.032
+with feature sequence_matching is 0.029
+with feature levenshtein is 0.01
+with feature sentence-transformers/sentence-t5-base is -0.002
+-------------------------------------------
+The correlation for feature similar_words_ratio
+with feature similar_words_ratio_length is 1.0
+with feature jaccard_similarity is 0.693
+with feature synonym_similarity is 0.51
+with feature sentence-transformers/sentence-t5-base is 0.453
+with feature distiluse-base-multilingual-cased-v1 is 0.323
+with feature levenshtein is 0.277
+with feature ne_similarity is 0.265
+with feature sequence_matching is 0.255
+with feature correct_pair is 0.043
+-------------------------------------------
+The correlation for feature similar_words_ratio_length
+with feature similar_words_ratio_length is 1.0
+with feature jaccard_similarity is 0.693
+with feature synonym_similarity is 0.51
+with feature sentence-transformers/sentence-t5-base is 0.453
+with feature distiluse-base-multilingual-cased-v1 is 0.323
+with feature levenshtein is 0.277
+with feature ne_similarity is 0.265
+with feature sequence_matching is 0.255
+with feature correct_pair is 0.043
+-------------------------------------------
+The correlation for feature jaccard_similarity
+with feature similar_words_ratio is 0.693
+with feature similar_words_ratio_length is 0.693
+with feature synonym_similarity is 0.545
+with feature levenshtein is 0.363
+with feature sentence-transformers/sentence-t5-base is 0.327
+with feature ne_similarity is 0.227
+with feature distiluse-base-multilingual-cased-v1 is 0.171
+with feature sequence_matching is 0.162
+with feature correct_pair is 0.05
+-------------------------------------------
+The correlation for feature levenshtein
+with feature sequence_matching is 0.369
+with feature jaccard_similarity is 0.363
+with feature sentence-transformers/sentence-t5-base is 0.319
+with feature synonym_similarity is 0.301
+with feature similar_words_ratio is 0.277
+with feature similar_words_ratio_length is 0.277
+with feature distiluse-base-multilingual-cased-v1 is 0.108
+with feature correct_pair is 0.04
+with feature ne_similarity is 0.01
+-------------------------------------------
+The correlation for feature sequence_matching
+with feature levenshtein is 0.369
+with feature similar_words_ratio is 0.255
+with feature similar_words_ratio_length is 0.255
+with feature sentence-transformers/sentence-t5-base is 0.213
+with feature jaccard_similarity is 0.162
+with feature synonym_similarity is 0.122
+with feature distiluse-base-multilingual-cased-v1 is 0.092
+with feature ne_similarity is 0.029
+with feature correct_pair is 0.017
