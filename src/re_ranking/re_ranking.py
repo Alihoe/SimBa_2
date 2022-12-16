@@ -9,10 +9,12 @@ from src.create_similarity_features.referential_similarity import get_sequence_e
 from src.create_similarity_features.sentence_encoder import encode_queries, encode_targets
 from src.candidate_retrieval import DATA_PATH
 from src.create_similarity_features.string_similarity import get_string_similarity
+from src.learning.create_feature_set import create_feature_set
 from src.utils import load_pickled_object, decompress_file, get_queries, get_targets, pickle_object, compress_file, \
     get_number_of_tokens, make_top_k_dictionary, get_candidate_targets, output_dict_to_pred_qrels
 from scipy.spatial.distance import cdist
 from pathlib import Path
+
 
 
 
@@ -71,6 +73,8 @@ def run():
     """
     0. Learning
     """
+    training_df = create_feature_set(args.data, targets, args.similarity_measure, args.sentence_embedding_models, args.referential_similarity_measures,
+                       args.lexical_similarity_measures, args.string_similarity_measures)
 
     """
     1. For all sentence embedding models\
