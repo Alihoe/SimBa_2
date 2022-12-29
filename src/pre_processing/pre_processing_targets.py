@@ -20,14 +20,14 @@ def run():
     parser.add_argument('-fields', type=str, nargs='+', default="all", help='Fields to keep in target file.')
     args = parser.parse_args()
 
-    output_dir = DATA_PATH + args.data + "/preprocessed/"
+    output_dir = DATA_PATH + args.data +'/'
     Path(output_dir).mkdir(parents=True, exist_ok=True)
 
     if args.fields != 'all':
         fields = ['id']
         fields.extend(args.fields)
         field_names = '_'.join(args.fields)
-        output_path = output_dir + field_names + '_targets.tsv'
+        output_path = output_dir + field_names + '_pp_targets.tsv'
         targets_df = get_certain_target_fields(args.targets, fields)
         targets_df.to_csv(output_path, index=False, header=True, sep='\t')
 

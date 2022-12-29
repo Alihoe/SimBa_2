@@ -75,6 +75,7 @@ def run():
     """
     training_df = create_feature_set(args.data, targets, args.similarity_measure, args.sentence_embedding_models, args.referential_similarity_measures,
                        args.lexical_similarity_measures, args.string_similarity_measures)
+    print(training_df)
 
     """
     1. For all sentence embedding models\

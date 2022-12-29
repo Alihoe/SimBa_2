@@ -3,6 +3,8 @@ import os
 import numpy as np
 import torch
 import pandas as pd
+from tensorflow.python.framework.ops import EagerTensor
+from tensorflow.python.ops.numpy_ops import np_config
 
 from src.create_similarity_features.lexical_similarity import get_lexical_entities
 from src.create_similarity_features.referential_similarity import get_sequence_entities
@@ -119,7 +121,10 @@ def run():
                 compress_file(stored_embedded_targets + ".pickle")
                 os.remove(stored_embedded_targets + ".pickle")
             for query_id in list(queries.keys()):
-                query_embedding = embedded_queries[query_id].reshape(1, -1)
+                query_embedding = embedded_queries[query_id]
+                if type(query_embedding) == EagerTensor:
+                    query_embedding = query_embedding.numpy()
+                query_embedding = query_embedding.reshape(1, -1)
                 embedded_targets_array = np.array(list(embedded_targets.values()))
                 sim_scores = (1 - cdist(query_embedding, embedded_targets_array,
                                         metric=args.similarity_measure)) * 100

@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import numpy as np
 from pathlib import Path
+
+import torch
 from scipy.spatial.distance import cdist
 
 from src.create_similarity_features.lexical_similarity import get_lexical_entities
@@ -10,7 +12,7 @@ from src.create_similarity_features.sentence_encoder import encode_queries, enco
 from src.create_similarity_features.string_similarity import get_string_similarity
 from src.learning import DATA_PATH
 from src.utils import load_pickled_object, decompress_file, get_number_of_tokens, pickle_object, compress_file, \
-    get_queries
+    get_queries, make_top_k_dictionary
 
 
 def create_feature_set(data, targets, similarity_measure, sentence_embedding_models, referential_similarity_measures, lexical_similarity_measures, string_similarity_measures):
@@ -18,7 +20,7 @@ def create_feature_set(data, targets, similarity_measure, sentence_embedding_mod
     Path(caching_directory_targets).mkdir(parents=True, exist_ok=True)
     caching_directory = DATA_PATH + "cache/training/" + data
     Path(caching_directory).mkdir(parents=True, exist_ok=True)
-    queries_path = 'training_queries_path'
+    queries_path = DATA_PATH + 'training/' + data + 'queries.tsv'
     queries = get_queries(queries_path)
     all_features = []
     all_sim_scores = {}
@@ -217,7 +219,36 @@ def create_feature_set(data, targets, similarity_measure, sentence_embedding_mod
             pickle_object(stored_sim_scores, sim_scores_to_store)
             compress_file(stored_sim_scores + ".pickle")
             os.remove(stored_sim_scores + ".pickle")
-    all_sim_scores_df = pd.DataFrame.from_dict(all_sim_scores, orient='index', columns=all_features )
+
+    output = {}
+
+    all_sim_scores_df = pd.DataFrame.from_dict(all_sim_scores, orient='index', columns=all_features)
+    for query_id in list(queries.keys()):
+        output[query_id] = []
+    feature_top_ks = {}
+    for feature in all_features:
+        this_feature_sim_scores = np.stack(all_sim_scores_df[feature].to_numpy())
+        sim_scores_top_k_values, sim_scores_top_k_idx = torch.topk(torch.tensor(this_feature_sim_scores), k=5,
+                                                               dim=1, largest=True)
+        sim_scores_top_k_values = sim_scores_top_k_values.cpu().tolist()
+        sim_scores_top_k_idx = sim_scores_top_k_idx.cpu().tolist()
+        this_feature_top_k = make_top_k_dictionary(list(queries.keys()), list(targets.keys()), sim_scores_top_k_values, sim_scores_top_k_idx)
+        feature_top_ks[feature] = this_feature_top_k
+    for query_id in list(queries.keys()):
+        for feature in all_features:
+            this_feature_top_k = feature_top_ks[feature]
+            output[query_id].extend(this_feature_top_k[query_id].keys())
+            output[query_id] = list(set(output[query_id]))
+
+    top_k_sim_scores_df = pd.DataFrame.from_dict(output, orient='index', columns=all_features)
+    print(top_k_sim_scores_df)
+
+    for index, row in top_k_sim_scores_df.iterrows():
+        query_id = row['query']
+        target_id = row['target']
+
+
+
     output_path = 'output_path'
     pickle_object(output_path, all_sim_scores_df)
     compress_file(output_path + ".pickle")

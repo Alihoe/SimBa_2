@@ -1,11 +1,11 @@
-import os
-
 from sentence_transformers import SentenceTransformer
 import logging
 import nltk
 import torch
 import tensorflow_hub as hub
+import tensorflow_text
 
+from src.create_similarity_features import SRC_PATH
 from src.create_similarity_features.infersent_encoder.infersent.models import InferSent
 
 logger = logging.getLogger(__name__)
@@ -18,7 +18,7 @@ def encode_queries(query_dictionary, model_name):
     if model_name == "infersent":
         word_embedding_type = "fast_text"
         nltk.download('punkt')
-        infersent_model_path = os.getcwd()+"/src/infersent_encoder/"
+        infersent_model_path = SRC_PATH +"/create_similarity_features/infersent_encoder/"
         if word_embedding_type == "glove":
             params_model = {'bsize': 64, 'word_emb_dim': 300, 'enc_lstm_dim': 2048,
                             'pool_type': 'max', 'dpout_model': 0.0, 'version': 1}
@@ -52,7 +52,7 @@ def encode_targets(target_dictionary, model_name):
         if model_name == "infersent":
             word_embedding_type = "fast_text"
             nltk.download('punkt')
-            infersent_model_path = "../infersent_encoder/"
+            infersent_model_path = SRC_PATH +"/create_similarity_features/infersent_encoder/"
             if word_embedding_type == "glove":
                 params_model = {'bsize': 64, 'word_emb_dim': 300, 'enc_lstm_dim': 2048,
                                 'pool_type': 'max', 'dpout_model': 0.0, 'version': 1}
